@@ -1,65 +1,103 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Image from "next/image";
+import React, { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Mail, LockKeyhole } from "lucide-react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { toast } from "sonner";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      // Mock API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      if (email === "admin@bildare.com" && password === "password123") {
+        toast.success("Logged in successfully");
+        window.location.href = "/admin";
+      } else {
+        toast.error("Invalid credentials");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
+      <div className="flex flex-col bg-white shadow-xl rounded-3xl w-lg overflow-hidden">
+        {/* Top Branding Image */}
+        <div className="w-full h-40 relative bg-[#1F201C] flex justify-center items-center">
+          <Image
+            src="/SigninLogo.svg"
+            alt="Login Logo"
+            fill
+            className=" w-10 h-10"
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Form */}
+        <div className="flex flex-col gap-5 px-8 py-8">
+          <h2 className="text-2xl font-bold text-gray-800 text-center">Welcome Back</h2>
+          <p className="text-sm text-gray-500 text-center">Sign in to your account</p>
+
+          <div className="flex flex-col gap-4">
+            {/* Email */}
+            <div className="grid w-full gap-2">
+              <Label htmlFor="email" className="text-gray-700">Email</Label>
+              <div className="relative">
+                <Input
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="pl-10 h-14 my-auto placeholder:text-gray-400 text-gray-800 w-full bg-gray-100 border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary"
+                />
+                <Mail className="absolute left-3 top-4 text-gray-400 w-5 h-5" />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="grid w-full gap-2">
+              <Label htmlFor="password" className="text-gray-700">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="pl-10 h-14 my-auto placeholder:text-gray-400 text-gray-800 w-full bg-gray-100 border border-gray-300 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary"
+                />
+                <LockKeyhole className="absolute left-3 top-4 text-gray-400 w-5 h-5" />
+              </div>
+            </div>
+          </div>
+
+          {/* Submit */}
+          <button
+            onClick={handleSubmit}
+            className="flex justify-center items-center gap-2 mt-4 w-full bg-primary text-white font-bold py-4 rounded-xl hover:opacity-90 transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            {loading ? <AiOutlineLoading3Quarters className="animate-spin" /> : "Log in"}
+          </button>
         </div>
-      </main>
+
+        {/* Footer */}
+        <div className="py-4 text-center text-gray-400 text-sm bg-gray-50">
+          © 2025 Bildare. All rights reserved.
+        </div>
+      </div>
     </div>
   );
 }
