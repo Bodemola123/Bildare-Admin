@@ -14,35 +14,45 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!email || !password) {
-      toast.error("Please fill in both email and password");
+const handleSubmit = async () => {
+  if (!email || !password) {
+    toast.error("Please fill in both email and password");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await fetch("https://bildare-backend.onrender.com/admin/login", {
+      method: "POST",
+      credentials: "include", // important so session is saved
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      toast.error(data.error || "Login failed");
       return;
     }
 
-    setLoading(true);
+    // Success
+    toast.success("Login successful!");
+    setTimeout(() => {
+      window.location.href = "/admin"; // redirect
+    }, 700);
 
-    try {
-      // Fake API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  } catch (err) {
+    console.error(err);
+    toast.error("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      // Mock auth
-      if (email === "admin@bildare.com" && password === "password123") {
-        toast.success("Login successful!");
-
-        setTimeout(() => {
-          window.location.href = "/admin";
-        }, 700);
-      } else {
-        toast.error("Wrong email or password");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <>
