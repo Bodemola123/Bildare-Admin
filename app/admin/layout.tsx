@@ -14,21 +14,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
 
-  const handleLogout = async () => {
+const handleLogout = async () => {
   try {
+    // 1. Call backend logout so session is destroyed server-side
     const res = await fetch("https://bildare-backend.onrender.com/admin/logout", {
       method: "POST",
-      credentials: "include", // VERY IMPORTANT for session logout
+      credentials: "include", // important for session cookies
     });
 
     if (!res.ok) {
       throw new Error("Logout failed");
     }
 
+    // 2. Remove the access token cookie stored on the frontend
+    document.cookie = "accessToken=; path=/; max-age=0;";
+
     toast.success("Logged out");
 
+    // 3. Redirect to login
     setTimeout(() => {
-      window.location.href = "/"; // back to login page
+      window.location.href = "/";
     }, 300);
 
   } catch (err) {
@@ -36,6 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     toast.error("Logout failed");
   }
 };
+
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 

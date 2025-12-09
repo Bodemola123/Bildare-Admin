@@ -25,10 +25,7 @@ const handleSubmit = async () => {
   try {
     const response = await fetch("https://bildare-backend.onrender.com/admin/login", {
       method: "POST",
-      credentials: "include", // important so session is saved
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
@@ -39,10 +36,13 @@ const handleSubmit = async () => {
       return;
     }
 
-    // Success
+    // SAVE ACCESS TOKEN IN COOKIE (HTTP ONLY IS NOT REQUIRED HERE)
+    document.cookie = `accessToken=${data.accessToken}; path=/; max-age=3600;`;
+
     toast.success("Login successful!");
+
     setTimeout(() => {
-      window.location.href = "/admin"; // redirect
+      window.location.href = "/admin";
     }, 700);
 
   } catch (err) {
@@ -52,6 +52,7 @@ const handleSubmit = async () => {
     setLoading(false);
   }
 };
+
 
 
   return (
