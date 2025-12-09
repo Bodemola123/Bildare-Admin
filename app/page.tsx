@@ -60,7 +60,7 @@ const handleSubmit = async () => {
       
 
       <div className="flex justify-center items-center min-h-screen px-4">
-        <div className="flex flex-col bg-white shadow-xl rounded-3xl max-w-lg overflow-hidden">
+        <div className="flex flex-col bg-white shadow-xl rounded-3xl w-full max-w-lg overflow-hidden">
           
           {/* Branding */}
           <div className="w-full h-40 relative bg-[#1F201C] flex justify-center items-center">
